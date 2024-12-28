@@ -1,0 +1,99 @@
+body {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* legend {
+  background-color: lightgray;
+  border: thin solid black;
+  padding: 4px;
+  border-radius: 6px;
+} */
+
+fieldset {
+  border: thin solid black;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+input {
+  border-radius: 6px;
+  border: thin solid black;
+  outline: none;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+select {
+  width: fit-content;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: thin solid black;
+  outline: none;
+
+  -webkit-appearance: none; /* Safari and Chrome */
+  -moz-appearance: none; /* Firefox */
+  appearance: none;
+
+  padding-right: 30px; /* Space for the new arrow */
+  background: white
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>')
+    no-repeat;
+  background-position: calc(100% - 6px) center; /* Adjust arrow position */
+  background-size: 10px; /* Size of the arrow */
+  cursor: pointer;
+}
+
+form button {
+  background-color: rgb(32, 32, 32);
+  color: white;
+}
+form button:hover {
+  background-color: white;
+  color: black;
+}
+form button:active {
+  background-color: rgba(32, 32, 32, 0.8);
+}
+
+form {
+  border: thin solid black;
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 7px 14px;
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  font-size: 0.8em;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+button:hover {
+  background-color: rgb(32, 32, 32);
+  color: white;
+}
+button:active {
+  background-color: rgba(32, 32, 32, 0.8);
+}
