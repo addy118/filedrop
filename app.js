@@ -1,11 +1,30 @@
 const express = require("express");
 const path = require("path");
 require("dotenv").config();
+const { SECRET, PORT } = process.env;
 const { getApp, routeError, appError } = require("./controllers/appController");
-const { getRouter, postNewRouter } = require("./controllers/routerController");
-const router = require("./routes/newRouter");
+const session = require("express-session");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const { PrismaClient } = require("@prisma/client");
 
 const app = express();
+
+// prisma session store
+app.use(
+  session({
+    store: new PrismaSessionStore(new PrismaClient(), {
+      checkPeriod: 2 * 60 * 1000,
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
+    secret: SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
 // set templates engine
 app.set("views", path.join(__dirname, "views"));
@@ -24,12 +43,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// other routers
-app.use("/route", router);
 app.get("/", getApp);
 
 app.use(routeError);
 app.use(appError);
 
-const { PORT } = process.env;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
