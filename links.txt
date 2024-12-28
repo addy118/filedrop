@@ -1,0 +1,5 @@
+postgresql: https://www.prisma.io/docs/orm/overview/databases/postgresql
+models: https://www.prisma.io/docs/orm/prisma-schema/data-model/models
+types: https://www.prisma.io/docs/orm/reference/prisma-schema-reference#model-field-scalar-types
+relations: https://www.prisma.io/docs/orm/prisma-schema/data-model/relations
+operations: https://www.prisma.io/docs/orm/reference/prisma-client-reference

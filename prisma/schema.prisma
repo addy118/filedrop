@@ -13,3 +13,10 @@ model Session {
   data      String
   expiresAt DateTime
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  uname     String   @unique @db.VarChar(255)
+  pass      String   @db.Char(60)
+  createdAt DateTime @default(now())
+}

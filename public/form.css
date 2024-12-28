@@ -97,3 +97,9 @@ button:hover {
 button:active {
   background-color: rgba(32, 32, 32, 0.8);
 }
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
