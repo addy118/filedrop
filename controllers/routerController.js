@@ -5,7 +5,7 @@ exports.getRouter = (req, res) => {
 };
 
 exports.postNewRouter = [
-  validateForm,
+  // validateForm,
   (req, res) => {
     const { field } = req.body;
 

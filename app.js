@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 require("dotenv").config();
 const { getApp, routeError, appError } = require("./controllers/appController");
-const { getRouter } = require("./controllers/routerController");
+const { getRouter, postNewRouter } = require("./controllers/routerController");
+const router = require("./routes/newRouter");
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 // parse json data
 app.use(express.json());
 
-require("./config/passport");
+// require("./config/passport");
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
@@ -24,8 +25,8 @@ app.use((req, res, next) => {
 });
 
 // other routers
-app.use("/route", getRouter);
-app.use("/", getApp);
+app.use("/route", router);
+app.get("/", getApp);
 
 app.use(routeError);
 app.use(appError);
