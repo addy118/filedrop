@@ -12,6 +12,8 @@ const {
   getLogin,
   postSignup,
   postLogin,
+  getFiles,
+  postFiles,
 } = require("./controllers/appController");
 const session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
@@ -70,6 +72,9 @@ app.post(
     failureRedirect: "/login",
   })
 );
+
+app.get("/files", getFiles);
+app.post("/files", postFiles);
 
 app.get("/logout", getLogout);
 app.post("/logout", postLogout);
