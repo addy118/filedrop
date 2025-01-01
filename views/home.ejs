@@ -6,6 +6,7 @@
     <link rel="icon" type="image/svg+xml" href="/node.svg" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/essentials.css" />
+    <link rel="stylesheet" href="folders.css" />
   </head>
   <body>
     <h1><%= title %></h1>
@@ -17,5 +18,69 @@
       Welcome <%= currentUser.uname %>! You've visited our home page <%= views
       %> times
     </h3>
+
+    <div class="files-grid">
+      <div class="grid-header">Name</div>
+      <div class="grid-header">Type</div>
+      <div class="grid-header">Size</div>
+      <!-- <div class="grid-header">Created At</div> -->
+      <div class="grid-header">Actions</div>
+
+      <% root.subFolders.forEach(folder => { %>
+      <div class="grid-item"><%= folder.name %></div>
+      <div class="grid-item">Folder</div>
+      <div class="grid-item">-</div>
+      <!-- <div class="grid-item"><%= folder.createdAt %></div> -->
+      <div class="grid-item">
+        <div class="action-buttons">
+          <form
+            method="post"
+            action="/root/folders/5/download"
+            class="inline-form"
+          >
+            <button type="submit" class="delete-btn">
+              <img src="download.svg" alt="delete" />
+            </button>
+          </form>
+          <form
+            method="post"
+            action="/root/folders/5/delete"
+            class="inline-form"
+          >
+            <button type="submit" class="delete-btn">
+              <img src="trash.svg" alt="delete" />
+            </button>
+          </form>
+        </div>
+      </div>
+      <% }) %> <% root.files.forEach(file => { %>
+      <div class="grid-item name"><%= file.name %></div>
+      <div class="grid-item">file type</div>
+      <div class="grid-item"><%= file.size %></div>
+      <!-- <div class="grid-item"><%= file.createdAt %></div> -->
+      <div class="grid-item">
+        <div class="action-buttons">
+          <form
+            method="post"
+            action="/root/folders/5/download"
+            class="inline-form"
+          >
+            <button type="submit" class="delete-btn">
+              <img src="download.svg" alt="delete" />
+            </button>
+          </form>
+          <form
+            method="post"
+            action="/root/folders/5/delete"
+            class="inline-form"
+          >
+            <button type="submit" class="delete-btn">
+              <img src="trash.svg" alt="delete" />
+            </button>
+          </form>
+        </div>
+      </div>
+      <% }) %>
+    </div>
   </body>
 </html>

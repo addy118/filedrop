@@ -20,7 +20,7 @@ button {
   color: black;
   font-size: 0.8em;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
 }
 button:hover {
@@ -33,29 +33,6 @@ button:active {
 
 .error {
   color: red;
-}
-
-.grid {
-  width: 95%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.grid-item {
-  background-color: rgb(236, 236, 236);
-  border: thin solid black;
-  padding: 16px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 8px;
-  cursor: pointer;
 }
 
 .heading {

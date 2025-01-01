@@ -2,7 +2,7 @@ const db = require("../../config/prismaClient");
 
 class Folder {
   static async getRoot(userId) {
-    const root = await prisma.folder.findFirst({
+    const root = await db.folder.findFirst({
       where: {
         userId: userId,
         parentId: null,

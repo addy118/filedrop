@@ -4,6 +4,7 @@ const User = require("../prisma/queries/User");
 const multer = require("multer");
 const path = require("path");
 const { validateSignUp, validateLogin } = require("../config/validation");
+const { getRoot } = require("../prisma/queries/Folder");
 
 const diskStorage = multer.diskStorage({
   destination: (req, file, done) => {
@@ -24,18 +25,25 @@ const uploadFiles = multer({
   },
 }).array("files", 10);
 
-exports.getApp = (req, res) => {
+exports.getApp = async (req, res) => {
   if (!req.user) {
     res.redirect("/login");
     next();
   }
+
+  const rootFolder = await getRoot(req.user.id);
+  console.log(rootFolder);
 
   if (!req.session.view) {
     req.session.view = 1;
   } else {
     req.session.view++;
   }
-  res.render("home", { title: "Home", views: req.session.view });
+  res.render("home", {
+    title: "Home",
+    views: req.session.view,
+    root: rootFolder,
+  });
 };
 
 exports.getSignup = (req, res) => res.render("signup", { title: "Sign Up" });

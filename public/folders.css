@@ -1,0 +1,37 @@
+.files-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr; /* Adjust column sizes */
+  gap: 1rem; /* Adjust spacing between cells */
+  align-items: center;
+}
+
+.grid-header {
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+  padding: 0.5rem;
+}
+
+.grid-item.name {
+  text-align: left;
+}
+
+.grid-item {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.grid-item button {
+  border: none;
+  padding: 0;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 0.5rem;
+}
+
+.inline-form {
+  display: inline;
+}
