@@ -15,12 +15,17 @@ const {
   getUpload,
   postUpload,
   getFolder,
+  postDeleteFolder,
+  handleLogin,
 } = require("./controllers/appController");
 const session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 const passport = require("passport");
 const { validateLogin } = require("./config/validation");
+const authRouter = require("./routes/authRouter");
+const fileRouter = require("./routes/fileRouter");
+const folderRouter = require("./routes/folderRouter");
 
 const app = express();
 
@@ -61,26 +66,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/signup", getSignup);
-app.post("/signup", postSignup);
-
-app.get("/login", getLogin);
-app.post(
-  "/login",
-  postLogin,
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-  })
-);
-
-app.get("/upload", getUpload);
-app.post("/upload", postUpload);
-
-app.get("/:folderId", getFolder);
-
-app.get("/logout", getLogout);
-app.post("/logout", postLogout);
+app.use("/", authRouter);
+app.use("/", fileRouter);
+app.use("/", folderRouter);
 
 app.get("/", getApp);
 

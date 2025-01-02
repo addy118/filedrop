@@ -1,138 +1,25 @@
-const { validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const User = require("../prisma/queries/User");
-const multer = require("multer");
-const path = require("path");
-const { validateSignUp, validateLogin } = require("../config/validation");
-const { getRoot } = require("../prisma/queries/Folder");
 const Folder = require("../prisma/queries/Folder");
 
-const diskStorage = multer.diskStorage({
-  destination: (req, file, done) => {
-    done(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, done) => {
-    const fileExt = path.extname(file.originalname);
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    done(null, file.fieldname + "-" + uniqueSuffix + fileExt);
-  },
-});
-
-const uploadFiles = multer({
-  storage: diskStorage,
-  limits: {
-    fileSize: 20 * 1000,
-    files: 10,
-  },
-}).array("files", 10);
-
-exports.getApp = async (req, res) => {
+exports.getApp = async (req, res, next) => {
   if (!req.user) {
-    res.redirect("/login");
-    next();
+    return res.redirect("/login");
+    // next();
   }
 
-  const rootFolder = await getRoot(req.user.id);
+  const rootFolder = await Folder.getRoot(req.user.id);
   console.log(rootFolder);
 
+  // increment the view count
   if (!req.session.view) {
     req.session.view = 1;
   } else {
     req.session.view++;
   }
+
   res.render("home", {
     title: "Home",
     views: req.session.view,
     root: rootFolder,
-  });
-};
-
-exports.getSignup = (req, res) => res.render("signup", { title: "Sign Up" });
-
-exports.getLogin = (req, res) => res.render("login", { title: "Log In" });
-
-exports.getUpload = (req, res) =>
-  res.render("files", { title: "Upload Files" });
-
-exports.getLogout = (req, res) => res.render("logout", { title: "Log Out" });
-
-exports.getFolder = async (req, res, next) => {
-  const { folderId } = req.params;
-  const folderDetails = await Folder.getFolderItems(Number(folderId));
-  console.log(folderDetails);
-
-  if (!folderDetails) {
-    const err = new Error("Folder Not Found");
-    err.status = 404;
-    return next(err);
-  }
-
-  res.render("home", {
-    title: folderDetails.name,
-    views: req.session.view,
-    root: folderDetails,
-  });
-};
-
-exports.postSignup = [
-  validateSignUp,
-  async (req, res) => {
-    const { uname, pass } = req.body;
-
-    // handle validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).render("signup", {
-        title: "Sign Up",
-        errors: errors.array(),
-      });
-    }
-
-    // route handler
-    const hashedPass = await bcrypt.hash(pass, 10);
-    const user = await User.createUser(uname, hashedPass);
-    console.log(user.uname, user.pass);
-    res.redirect("/");
-  },
-];
-
-exports.postLogin = [
-  validateLogin,
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).render("login", {
-        title: "Log In",
-        errors: errors.array(),
-      });
-    }
-    next();
-  },
-];
-
-exports.postUpload = (req, res, next) => {
-  // handle uploaded files using multer middleware
-  uploadFiles(req, res, (err) => {
-    // handle multer errors
-    if (err instanceof multer.MulterError) {
-      return res.status(400).render("files", {
-        title: "Upload File",
-        errors: [{ msg: err.message }],
-      });
-    } else if (err) {
-      next(err);
-    }
-
-    // route handler
-    console.log("file uploaded");
-    res.status(200).send(req.files);
-  });
-};
-
-exports.postLogout = (req, res) => {
-  req.logout((err) => {
-    if (err) next(err);
-    res.redirect("/");
   });
 };
 
