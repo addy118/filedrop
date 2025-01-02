@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require("path");
 const { validateSignUp, validateLogin } = require("../config/validation");
 const { getRoot } = require("../prisma/queries/Folder");
+const Folder = require("../prisma/queries/Folder");
 
 const diskStorage = multer.diskStorage({
   destination: (req, file, done) => {
@@ -50,9 +51,28 @@ exports.getSignup = (req, res) => res.render("signup", { title: "Sign Up" });
 
 exports.getLogin = (req, res) => res.render("login", { title: "Log In" });
 
-exports.getFiles = (req, res) => res.render("files", { title: "Upload Files" });
+exports.getUpload = (req, res) =>
+  res.render("files", { title: "Upload Files" });
 
 exports.getLogout = (req, res) => res.render("logout", { title: "Log Out" });
+
+exports.getFolder = async (req, res, next) => {
+  const { folderId } = req.params;
+  const folderDetails = await Folder.getFolderItems(Number(folderId));
+  console.log(folderDetails);
+
+  if (!folderDetails) {
+    const err = new Error("Folder Not Found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("home", {
+    title: folderDetails.name,
+    views: req.session.view,
+    root: folderDetails,
+  });
+};
 
 exports.postSignup = [
   validateSignUp,
@@ -90,7 +110,7 @@ exports.postLogin = [
   },
 ];
 
-exports.postFiles = (req, res, next) => {
+exports.postUpload = (req, res, next) => {
   // handle uploaded files using multer middleware
   uploadFiles(req, res, (err) => {
     // handle multer errors

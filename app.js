@@ -12,8 +12,9 @@ const {
   getLogin,
   postSignup,
   postLogin,
-  getFiles,
-  postFiles,
+  getUpload,
+  postUpload,
+  getFolder,
 } = require("./controllers/appController");
 const session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
@@ -73,8 +74,10 @@ app.post(
   })
 );
 
-app.get("/files", getFiles);
-app.post("/files", postFiles);
+app.get("/upload", getUpload);
+app.post("/upload", postUpload);
+
+app.get("/:folderId", getFolder);
 
 app.get("/logout", getLogout);
 app.post("/logout", postLogout);

@@ -6,7 +6,7 @@
     <link rel="icon" type="image/svg+xml" href="/node.svg" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/essentials.css" />
-    <link rel="stylesheet" href="folders.css" />
+    <link rel="stylesheet" href="/folders.css" />
   </head>
   <body>
     <h1><%= title %></h1>
@@ -26,8 +26,18 @@
       <!-- <div class="grid-header">Created At</div> -->
       <div class="grid-header">Actions</div>
 
-      <% root.subFolders.forEach(folder => { %>
-      <div class="grid-item"><%= folder.name %></div>
+      <% if (root.parentId) { %>
+      <a href="/<%= root.parentId %>"><div class="grid-item">..</div></a>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <!-- <div class="grid-item"></div> -->
+      <div class="grid-item">
+        <div class="action-buttons"></div>
+      </div>
+      <% } %> <% root.subFolders.forEach(folder => { %>
+      <a href="/<%= folder.id %>"
+        ><div class="grid-item"><%= folder.name %></div></a
+      >
       <div class="grid-item">Folder</div>
       <div class="grid-item">-</div>
       <!-- <div class="grid-item"><%= folder.createdAt %></div> -->
@@ -39,7 +49,7 @@
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
-              <img src="download.svg" alt="delete" />
+              <img src="/download.svg" alt="delete" />
             </button>
           </form>
           <form
@@ -48,7 +58,7 @@
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
-              <img src="trash.svg" alt="delete" />
+              <img src="/trash.svg" alt="delete" />
             </button>
           </form>
         </div>
@@ -66,7 +76,7 @@
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
-              <img src="download.svg" alt="delete" />
+              <img src="/download.svg" alt="delete" />
             </button>
           </form>
           <form
@@ -75,7 +85,7 @@
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
-              <img src="trash.svg" alt="delete" />
+              <img src="/trash.svg" alt="delete" />
             </button>
           </form>
         </div>
