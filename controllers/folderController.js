@@ -20,12 +20,29 @@ exports.getFolder = async (req, res, next) => {
   });
 };
 
+exports.getNewFolder = (req, res) => {
+  const { folderId } = req.params;
+
+  res.render("folderForm", {
+    title: "New Folder",
+    parentId: folderId,
+  });
+};
+
+exports.postNewFolder = (req, res) => {
+  const { folderId } = req.params;
+  const { folderName } = req.body;
+
+  Folder.create(folderName, Number(folderId), req.user.id);
+  res.redirect(`/${folderId}/folder`);
+};
+
 exports.postDeleteFolder = async (req, res) => {
   const { folderId } = req.params;
-  parent = await Folder.getParent(folderId);
+  parent = await Folder.getParent(Number(folderId));
   await Folder.deleteById(Number(folderId));
 
-  res.redirect(`/${parent.id}`);
+  res.redirect(`/${parent.id}/folder`);
 };
 
 exports.appError = (err, req, res, next) => {

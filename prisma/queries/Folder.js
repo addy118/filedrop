@@ -1,6 +1,16 @@
 const db = require("../../config/prismaClient");
 
 class Folder {
+  static async create(name, parentId, userId) {
+    await db.folder.create({
+      data: {
+        name,
+        parentId,
+        userId,
+      },
+    });
+  }
+
   static async createRoot(userId) {
     await db.folder.create({
       data: {

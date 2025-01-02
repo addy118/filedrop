@@ -12,6 +12,7 @@
     <h1><%= title %></h1>
     <nav>
       <a href="/<%= folderId %>/upload"><button>Upload File</button></a>
+      <a href="/<%= folderId %>/create"><button>Create Folder</button></a>
       <a href="/logout"><button>Log Out</button></a>
     </nav>
     <!-- <h3>
@@ -54,7 +55,7 @@
           </form>
           <form
             method="post"
-            action="folder/<%= folder.id %>/delete"
+            action="/folder/<%= folder.id %>/delete"
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
