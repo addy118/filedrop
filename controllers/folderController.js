@@ -2,8 +2,9 @@ const Folder = require("../prisma/queries/Folder");
 
 exports.getFolder = async (req, res, next) => {
   const { folderId } = req.params;
+
   const folderDetails = await Folder.getItemsById(Number(folderId));
-  console.log(folderDetails);
+  console.log("folder rendered successfully!");
 
   if (!folderDetails) {
     const err = new Error("Folder Not Found");

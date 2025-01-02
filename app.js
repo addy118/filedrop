@@ -6,23 +6,11 @@ const {
   getApp,
   routeError,
   appError,
-  getSignup,
-  getLogout,
-  postLogout,
-  getLogin,
-  postSignup,
-  postLogin,
-  getUpload,
-  postUpload,
-  getFolder,
-  postDeleteFolder,
-  handleLogin,
 } = require("./controllers/appController");
 const session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 const passport = require("passport");
-const { validateLogin } = require("./config/validation");
 const authRouter = require("./routes/authRouter");
 const fileRouter = require("./routes/fileRouter");
 const folderRouter = require("./routes/folderRouter");

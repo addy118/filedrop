@@ -7,7 +7,7 @@ exports.getApp = async (req, res, next) => {
   }
 
   const rootFolder = await Folder.getRoot(req.user.id);
-  console.log(rootFolder);
+  console.log("app is working!");
 
   // increment the view count
   if (!req.session.view) {
