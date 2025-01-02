@@ -12,10 +12,11 @@ exports.getFolder = async (req, res, next) => {
     return next(err);
   }
 
-  res.render("home", {
+  res.render("folder", {
     title: folderDetails.name,
     views: req.session.view,
     root: folderDetails,
+    folderId: folderDetails.id,
   });
 };
 

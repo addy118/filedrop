@@ -11,15 +11,15 @@
   <body>
     <h1><%= title %></h1>
     <%- include('partials/errors.ejs') %>
-    <form action="/files" method="POST" enctype="multipart/form-data">
+    <form action="/upload" method="POST" enctype="multipart/form-data">
       <fieldset>
         <label for="files"
           >Upload: <input type="file" name="files" id="files" multiple
         /></label>
-
+        
         <button type="submit">Submit</button>
       </fieldset>
     </form>
-    <a href="/"><button>Home</button></a>
+    <a href="/"><button>Root</button></a>
   </body>
 </html>

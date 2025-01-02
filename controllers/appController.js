@@ -16,11 +16,7 @@ exports.getApp = async (req, res, next) => {
     req.session.view++;
   }
 
-  res.render("home", {
-    title: "Home",
-    views: req.session.view,
-    root: rootFolder,
-  });
+  res.redirect(`/${rootFolder.id}/folder`);
 };
 
 exports.routeError = (req, res) => {

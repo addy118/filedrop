@@ -6,8 +6,8 @@ const {
 } = require("../controllers/fileController");
 const fileRouter = Router();
 
-fileRouter.get("/upload", getUpload);
-fileRouter.post("/upload", postUpload);
+fileRouter.get("/:folderId/upload", getUpload);
+fileRouter.post("/:folderId/upload", postUpload);
 
 fileRouter.post("/file/:fileId/delete", postDeleteFile);
 

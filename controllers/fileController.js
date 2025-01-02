@@ -22,14 +22,14 @@ const uploadFiles = multer({
 }).array("files", 10);
 
 exports.getUpload = (req, res) =>
-  res.render("files", { title: "Upload Files" });
+  res.render("fileForm", { title: "Upload Files" });
 
-exports.postUpload = (req, res, next) => {
-  // handle uploaded files using multer middleware
+exports.postUpload = async (req, res, next) => {
+  // handle uploaded files using multer middleware callback
   uploadFiles(req, res, (err) => {
     // handle multer errors
     if (err instanceof multer.MulterError) {
-      return res.status(400).render("files", {
+      return res.status(400).render("fileForm", {
         title: "Upload File",
         errors: [{ msg: err.message }],
       });
@@ -38,8 +38,23 @@ exports.postUpload = (req, res, next) => {
     }
 
     // route handler
+    const { folderId } = req.params;
+
     console.log("file uploaded");
-    res.status(200).send(req.files);
+    const files = [];
+    req.files.forEach((file) => {
+      const fileName = path.parse(file.originalname).name;
+      const fileSize = file.size;
+      files.push({ name: fileName, size: fileSize });
+    });
+    console.log(files);
+
+    // await Promise.all(
+    //   files.map(file => File.create(file.name, folderId, file.size, req.user.id))
+    // );
+
+
+    res.redirect(`/${folderId}/folder`);
   });
 };
 
