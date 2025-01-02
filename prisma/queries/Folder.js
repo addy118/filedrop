@@ -24,7 +24,7 @@ class Folder {
   }
 
   static async getParent(childId) {
-    const childFolder = await Folder.getItemsById(1, 2);
+    const childFolder = await Folder.getItemsById(childId);
     return await Folder.getItemsById(1, childFolder.parentId);
   }
 
