@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const File = require("../prisma/queries/File");
 
 const diskStorage = multer.diskStorage({
   destination: (req, file, done) => {
@@ -40,4 +41,11 @@ exports.postUpload = (req, res, next) => {
     console.log("file uploaded");
     res.status(200).send(req.files);
   });
+};
+
+exports.postDeleteFile = async (req, res) => {
+  const { fileId } = req.params;
+  const folderId = await File.getFolderId(Number(fileId));
+  await File.deleteById(Number(fileId));
+  res.redirect(`/${folderId}`);
 };

@@ -2,10 +2,7 @@ const Folder = require("../prisma/queries/Folder");
 
 exports.getFolder = async (req, res, next) => {
   const { folderId } = req.params;
-  const folderDetails = await Folder.getItemsById(
-    req.user.id,
-    Number(folderId)
-  );
+  const folderDetails = await Folder.getItemsById(Number(folderId));
   console.log(folderDetails);
 
   if (!folderDetails) {
@@ -23,9 +20,10 @@ exports.getFolder = async (req, res, next) => {
 
 exports.postDeleteFolder = async (req, res) => {
   const { folderId } = req.params;
-
+  parent = await Folder.getParent(folderId);
   await Folder.deleteById(Number(folderId));
-  res.redirect("/");
+
+  res.redirect(`/${parent.id}`);
 };
 
 exports.appError = (err, req, res, next) => {

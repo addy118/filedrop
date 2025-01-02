@@ -1,4 +1,5 @@
 const db = require("../../config/prismaClient");
+const Folder = require("./Folder");
 
 class User {
   static async fetchById(userId) {
@@ -18,18 +19,14 @@ class User {
   }
 
   static async createUser(uname, pass) {
-    try {
-      return await db.user.create({
-        data: {
-          uname: uname,
-          pass: pass,
-        },
-      });
-    } catch (err) {
-      console.error("Error: ", err.message);
-      console.error("Stack: ", err.stack);
-      throw new Error("Error creating user: " + err.message);
-    }
+    const user = await db.user.create({
+      data: {
+        uname: uname,
+        pass: pass,
+      },
+    });
+
+    await Folder.createRoot(user.id);
   }
 }
 

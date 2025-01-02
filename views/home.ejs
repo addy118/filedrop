@@ -16,7 +16,7 @@
     </nav>
     <h3>
       Welcome <%= currentUser.uname %>! You've visited our home page <%= views
-      %> times
+      %> times!
     </h3>
 
     <div class="files-grid">
@@ -45,7 +45,7 @@
         <div class="action-buttons">
           <form
             method="post"
-            action="/root/folders/5/download"
+            action="/folder/<%= folder.id %>/download"
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
@@ -54,7 +54,7 @@
           </form>
           <form
             method="post"
-            action="/root/folders/5/delete"
+            action="folder/<%= folder.id %>/delete"
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
@@ -72,7 +72,7 @@
         <div class="action-buttons">
           <form
             method="post"
-            action="/root/folders/5/download"
+            action="/file/<%= file.id %>/download"
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
@@ -81,7 +81,7 @@
           </form>
           <form
             method="post"
-            action="/root/folders/5/delete"
+            action="/file/<%= file.id %>/delete"
             class="inline-form"
           >
             <button type="submit" class="delete-btn">

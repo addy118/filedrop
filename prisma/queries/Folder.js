@@ -1,8 +1,17 @@
 const db = require("../../config/prismaClient");
 
 class Folder {
+  static async createRoot(userId) {
+    await db.folder.create({
+      data: {
+        name: "Root",
+        userId: userId,
+      },
+    });
+  }
+
   static async getRoot(userId) {
-    const root = await db.folder.findFirst({
+    return await db.folder.findFirst({
       where: {
         userId: userId,
         parentId: null,
@@ -12,14 +21,16 @@ class Folder {
         files: true,
       },
     });
-
-    return root;
   }
 
-  static async getFolderItems(folderId) {
-    const folder = await db.folder.findFirst({
+  static async getParent(childId) {
+    const childFolder = await Folder.getItemsById(1, 2);
+    return await Folder.getItemsById(1, childFolder.parentId);
+  }
+
+  static async getItemsById(folderId) {
+    return await db.folder.findFirst({
       where: {
-        userId: 1,
         id: folderId,
       },
       include: {
@@ -27,8 +38,12 @@ class Folder {
         files: true,
       },
     });
+  }
 
-    return folder;
+  static async deleteById(folderId) {
+    await db.folder.delete({
+      where: { id: folderId },
+    });
   }
 }
 

@@ -1,18 +1,16 @@
 const db = require("../config/prismaClient");
+const File = require("./queries/File");
+const Folder = require("./queries/Folder");
 
 const main = async () => {
-    const records = await db.folder.findFirst({
-      where: {
-        userId: 1,
-        parentId: null,
-      },
-      include: {
-        subFolders: true,
-        files: true,
-      },
-    });
+  const file = await File.getById(2);
+  // const file = await db.file.findFirst({
+  //   where: {
+  //     id: 2,
+  //   },
+  // });
 
-  console.log(records);
+  console.log(file.folderId);
 };
 
 main();
