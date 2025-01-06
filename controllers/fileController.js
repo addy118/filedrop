@@ -80,6 +80,34 @@ exports.postUpload = async (req, res, next) => {
   }
 };
 
+exports.postDownloadFile = async (req, res) => {
+  const { userId, folderId, fileId } = req.params;
+
+  try {
+    const file = await File.getById(Number(fileId));
+    const filePath = `${userId}/${folderId}/${file.name}.${file.type}`;
+
+    const { data, error } = await supabase.storage
+      .from("files")
+      .download(filePath);
+
+    if (error) {
+      console.error("Error downloading file:", error);
+      return res.status(500).send("Failed to download file.");
+    }
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${file.name}.${file.type}`
+    );
+
+    res.send(data);
+  } catch (err) {
+    console.error("Error: ", err.message);
+    res.status(500).send("Failed to process the download request.");
+  }
+};
+
 exports.postDeleteFile = async (req, res) => {
   const fileId = Number(req.params.fileId);
   const folderId = await File.getFolderId(fileId);

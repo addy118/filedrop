@@ -37,7 +37,7 @@
       </div>
       <% } %> <% root.subFolders.forEach(folder => { %>
       <a href="/<%= folder.id %>/folder"
-        ><div class="grid-item"><%= folder.name %></div></a
+        ><div class="grid-item name"><%= folder.name %></div></a
       >
       <div class="grid-item">Folder</div>
       <div class="grid-item">-</div>
@@ -71,11 +71,21 @@
       <!-- <div class="grid-item"><%= file.createdAt %></div> -->
       <div class="grid-item">
         <div class="action-buttons">
-          <a href="<%= file.url %>">
-            <button type="submit" class="delete-btn">
-              <img src="/download.svg" alt="delete" />
+          <!-- <a href="<%= file.url %>">
+            <button type="submit" class="download-btn">
+              <img src="/download.svg" alt="download" />
             </button>
-          </a>
+          </a> -->
+          <form
+            method="post"
+            action="/<%= currentUser.id %>/<%= file.folderId %>/<%= file.id %>/download"
+            class="inline-form"
+          >
+            <button type="submit" class="download-btn">
+              <img src="/download.svg" alt="download" />
+            </button>
+          </form>
+
           <form
             method="post"
             action="/file/<%= file.id %>/delete"
