@@ -71,15 +71,11 @@
       <!-- <div class="grid-item"><%= file.createdAt %></div> -->
       <div class="grid-item">
         <div class="action-buttons">
-          <form
-            method="post"
-            action="/file/<%= file.id %>/download"
-            class="inline-form"
-          >
+          <a href="<%= file.url %>">
             <button type="submit" class="delete-btn">
               <img src="/download.svg" alt="delete" />
             </button>
-          </form>
+          </a>
           <form
             method="post"
             action="/file/<%= file.id %>/delete"
