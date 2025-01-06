@@ -44,6 +44,7 @@ model File {
   name      String   @db.VarChar(255)
   folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
   folderId  Int
+  type      String   @db.VarChar(30)
   size      Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -11,12 +11,17 @@
   <body>
     <h1><%= title %></h1>
     <%- include('partials/errors.ejs') %>
-    <form action="/<%= folderId %>/upload" method="POST" enctype="multipart/form-data">
+    <form
+      action="/<%= folderId %>/upload"
+      method="POST"
+      enctype="multipart/form-data"
+    >
       <fieldset>
         <label for="files"
-          >Upload: <input type="file" name="files" id="files" multiple
+          >Upload (Max 10 files of each 5.5 MB):
+          <input type="file" name="files" id="files" multiple
         /></label>
-        
+
         <button type="submit">Submit</button>
       </fieldset>
     </form>

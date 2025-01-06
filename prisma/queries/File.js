@@ -1,11 +1,12 @@
 const db = require("../../config/prismaClient");
 
 class File {
-  static async create(name, folderId, size, userId, url = null) {
+  static async create(name, folderId, type, size, userId, url = null) {
     await db.file.create({
       data: {
         name,
         folderId,
+        type,
         size,
         userId,
         url,

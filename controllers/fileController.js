@@ -47,8 +47,9 @@ exports.postUpload = async (req, res, next) => {
 
       // construct file details
       return {
-        name: file.originalname,
+        name: file.originalname.split(".")[0],
         folderId: Number(folderId),
+        type: file.mimetype.split("/")[1],
         size: file.size,
         userId: Number(userId),
         url: publicData.publicUrl + "?download",
@@ -61,7 +62,14 @@ exports.postUpload = async (req, res, next) => {
     // save file details to database
     await Promise.all(
       files.map((file) =>
-        File.create(file.name, file.folderId, file.size, file.userId, file.url)
+        File.create(
+          file.name,
+          file.folderId,
+          file.type,
+          file.size,
+          file.userId,
+          file.url
+        )
       )
     );
 
