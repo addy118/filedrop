@@ -10,7 +10,7 @@ const fileRouter = Router();
 
 fileRouter.get("/:folderId/upload", getUpload);
 fileRouter.post("/:folderId/upload", uploadFiles, multerError, postUpload);
-fileRouter.post("/:userId/:folderId/:fileId/download", postDownloadFile);
+fileRouter.post("/file/:userId/:folderId/:fileId/download", postDownloadFile);
 
 fileRouter.post("/file/:fileId/delete", postDeleteFile);
 
