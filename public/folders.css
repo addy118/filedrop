@@ -1,7 +1,12 @@
+body {
+  padding: 0 30px;
+}
+
 .files-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 2fr; /* Adjust column sizes */
-  gap: 1rem; /* Adjust spacing between cells */
+  width: 100%;
+  grid-template-columns: minmax(100px, 1fr) repeat(3, minmax(20px, 0.2fr));
+  gap: 1rem;
   align-items: center;
 }
 
