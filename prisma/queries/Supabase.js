@@ -1,14 +1,15 @@
 const supabase = require("../../config/supabase");
+const File = require("./File");
 const Folder = require("./Folder");
 
 class Supabase {
   static async removeFile(fileId, userId) {
-    const folderId = await File.getFolderId(fileId);
+    const folderId = await File.getFolderId(Number(fileId));
     const file = await File.getById(fileId);
 
-    await supabase.storage.from("files").remove[
-      `${userId}/${folderId}/${file.name}.${file.type}`
-    ];
+    await supabase.storage
+      .from("files")
+      .remove([`${userId}/${folderId}/${file.name}.${file.type}`]);
   }
 
   static async removeFolder(folderId, userId) {

@@ -1,5 +1,6 @@
 const File = require("../prisma/queries/File");
 const supabase = require("../config/supabase");
+const Supabase = require("../prisma/queries/Supabase");
 
 exports.getUpload = (req, res) => {
   const { folderId } = req.params;
@@ -11,7 +12,6 @@ exports.postUpload = async (req, res, next) => {
   const userId = req.user.id;
   console.log("file uploaded");
 
-  // check for empty upload
   if (!req.files || req.files.length === 0) {
     return res.status(400).send("No files uploaded!");
   }
@@ -76,24 +76,20 @@ exports.postUpload = async (req, res, next) => {
     res.redirect(`/${folderId}/folder`);
   } catch (err) {
     console.error("Error uploading files:", err);
-    res.status(500).send("Failed to upload files.");
+    res.status(500).send("Failed to upload files. Please try again!");
   }
 };
 
 exports.postDeleteFile = async (req, res) => {
   const fileId = Number(req.params.fileId);
-  const userId = Number(req.user.id);
   const folderId = await File.getFolderId(fileId);
-  const file = await File.getById(fileId);
   try {
-    await supabase.storage
-      .from("files")
-      .remove([`${userId}/${folderId}/${file.name}.${file.type}`]);
+    await Supabase.removeFile(fileId, Number(req.user.id));
+    await File.deleteById(fileId);
+    res.redirect(`/${folderId}/folder`);
   } catch (err) {
     console.error("Error: ", err.message);
     console.error("Stack: ", err.stack);
     res.status(500).end("Failed to remove files");
   }
-  await File.deleteById(fileId);
-  res.redirect(`/${folderId}/folder`);
 };
