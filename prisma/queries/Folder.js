@@ -47,6 +47,9 @@ class Folder {
         subFolders: true,
         files: true,
       },
+      orderBy: {
+        name: "asc",
+      },
     });
   }
 

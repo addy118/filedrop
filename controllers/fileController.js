@@ -81,8 +81,19 @@ exports.postUpload = async (req, res, next) => {
 };
 
 exports.postDeleteFile = async (req, res) => {
-  const { fileId } = req.params;
-  const folderId = await File.getFolderId(Number(fileId));
-  await File.deleteById(Number(fileId));
+  const fileId = Number(req.params.fileId);
+  const userId = Number(req.user.id);
+  const folderId = await File.getFolderId(fileId);
+  const file = await File.getById(fileId);
+  try {
+    await supabase.storage
+      .from("files")
+      .remove([`${userId}/${folderId}/${file.name}.${file.type}`]);
+  } catch (err) {
+    console.error("Error: ", err.message);
+    console.error("Stack: ", err.stack);
+    res.status(500).end("Failed to remove files");
+  }
+  await File.deleteById(fileId);
   res.redirect(`/${folderId}/folder`);
 };
