@@ -44,15 +44,15 @@
       <!-- <div class="grid-item"><%= folder.createdAt %></div> -->
       <div class="grid-item">
         <div class="action-buttons">
-          <form
+          <!-- <form
             method="post"
-            action="/folder/<%= folder.id %>/download"
+            action="/folder/<%= currentUser.id %>/<%= folder.parentId %>/<%= folder.id %>/download"
             class="inline-form"
           >
             <button type="submit" class="delete-btn">
-              <img src="/download.svg" alt="delete" />
+              <img src="/download.svg" alt="download" />
             </button>
-          </form>
+          </form> -->
           <form
             method="post"
             action="/folder/<%= folder.id %>/delete"

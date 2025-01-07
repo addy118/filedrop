@@ -1,4 +1,3 @@
-const supabase = require("../config/supabase");
 const Folder = require("../prisma/queries/Folder");
 const Supabase = require("../prisma/queries/Supabase");
 
