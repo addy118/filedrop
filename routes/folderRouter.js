@@ -13,4 +13,9 @@ folderRouter.get("/:folderId/folder", getFolder);
 folderRouter.get("/:folderId/create", getNewFolder);
 folderRouter.post("/:folderId/create", postNewFolder);
 
+folderRouter.post(
+  "/folder/:userId/:parentId/:folderId/download",
+  postDownloadFolder
+);
+
 module.exports = folderRouter;

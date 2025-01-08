@@ -38,6 +38,74 @@ exports.postNewFolder = (req, res) => {
   res.redirect(`/${folderId}/folder`);
 };
 
+exports.postDownloadFolder = async (req, res) => {
+  const folderId = Number(req.params.folderId);
+  const userId = Number(req.params.userId);
+
+  try {
+    // 1. fetch folder and file metadata from Supabase
+    // adjust the path to match your folder structure in Supabase
+    const folderPath = `${userId}/${folderId}`;
+    const { data: files, error } = await supabase.storage
+      .from("files")
+      .list(folderPath, { recursive: true });
+    if (error) {
+      return res.status(500).json({ error: "Failed to fetch folder contents" });
+    }
+    console.log(files);
+
+    // 2. create a ZIP file in memory
+    const zipPath = path.resolve(__dirname, `folder_${folderId}.zip`);
+    const output = fs.createWriteStream(zipPath);
+    const archive = archiver("zip", { zlib: { level: 9 } });
+
+    // pipe archive data to the output file
+    archive.pipe(output);
+
+    // 3. add files and folders to the archive
+    for (const file of files) {
+      const filePath = `/${folderPath}/${file.name}`;
+      console.log(`file path: ${filePath}`);
+      const { data: fileStream, error: downloadError } = await supabase.storage
+        .from("files")
+        .download(filePath);
+
+      if (downloadError) {
+        console.error(`Error downloading file: ${filePath}`);
+        continue;
+      }
+
+      console.log("adding files...");
+      archive.append(fileStream, {
+        name: filePath.replace(`${folderPath}/`, ""),
+      }); // preserve hierarchical structure
+    }
+
+    // 4. finalize the archive
+    console.log("finalizing...");
+    await archive.finalize();
+
+    // handle stream events
+    output.on("close", () => {
+      console.log(`ZIP file created: ${archive.pointer()} total bytes`);
+      res.download(zipPath, `folder_${folderId}.zip`, (err) => {
+        if (err) {
+          console.error(err);
+        }
+        fs.unlinkSync(zipPath); // delete the ZIP file after download
+      });
+    });
+
+    archive.on("error", (err) => {
+      console.error(err);
+      res.status(500).json({ error: "Error creating ZIP file" });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Unexpected error occurred" });
+  }
+};
+
 exports.postDeleteFolder = async (req, res) => {
   const folderId = Number(req.params.folderId);
   const userId = Number(req.user.id);
