@@ -28,7 +28,9 @@
       <div class="grid-header">Actions</div>
 
       <% if (root.parentId) { %>
-      <a href="/<%= root.parentId %>/folder"><div class="grid-item">..</div></a>
+      <a href="/<%= root.parentId %>/folder"
+        ><div class="grid-item name">..</div></a
+      >
       <div class="grid-item"></div>
       <div class="grid-item"></div>
       <!-- <div class="grid-item"></div> -->
@@ -39,7 +41,7 @@
       <a href="/<%= folder.id %>/folder"
         ><div class="grid-item name"><%= folder.name %></div></a
       >
-      <div class="grid-item">Folder</div>
+      <div class="grid-item">folder</div>
       <div class="grid-item">-</div>
       <!-- <div class="grid-item"><%= folder.createdAt %></div> -->
       <div class="grid-item">

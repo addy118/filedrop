@@ -49,7 +49,8 @@ exports.postUpload = async (req, res, next) => {
       return {
         name: file.originalname.split(".")[0],
         folderId: Number(folderId),
-        type: file.mimetype.split("/")[1],
+        // type: file.mimetype.split("/")[1],
+        type: file.originalname.split(".")[1],
         size: file.size,
         userId: Number(userId),
         url: publicData.publicUrl + "?download",
@@ -76,7 +77,9 @@ exports.postUpload = async (req, res, next) => {
     res.redirect(`/${folderId}/folder`);
   } catch (err) {
     console.error("Error uploading files:", err);
-    res.status(500).send("Failed to upload files. Please try again!");
+    res
+      .status(500)
+      .send(`Failed to upload files. ${err.message} Please try again!`);
   }
 };
 
@@ -96,15 +99,24 @@ exports.postDownloadFile = async (req, res) => {
       return res.status(500).send("Failed to download file.");
     }
 
+    res.setHeader("Content-Type", data.type);
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename=${file.name}.${file.type}`
+      `attachment; filename="${file.name}.${file.type}"`
     );
 
-    res.send(data);
+    // convert blob to buffer
+    const buffer = await data.arrayBuffer();
+    const bufferData = Buffer.from(buffer);
+
+    // write the buffer to the response
+    res.write(bufferData);
+    res.end();
   } catch (err) {
     console.error("Error: ", err.message);
-    res.status(500).send("Failed to process the download request.");
+    res
+      .status(500)
+      .send(`Failed to process the download request. ${err.message}`);
   }
 };
 
@@ -118,6 +130,6 @@ exports.postDeleteFile = async (req, res) => {
   } catch (err) {
     console.error("Error: ", err.message);
     console.error("Stack: ", err.stack);
-    res.status(500).end("Failed to remove files");
+    res.status(500).end(`Failed to remove files. err.message`);
   }
 };
